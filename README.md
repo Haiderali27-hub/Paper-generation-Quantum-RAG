@@ -1,5 +1,45 @@
 # Paper-generation-Quantum-RAG
 
+## Architecture
+
+```mermaid
+flowchart TB
+  subgraph RAG[Research RAG]
+    PDFs[pdfs/** PDFs] --> ING[ingest.py\nLangChain PDF loaders\nchunking]
+    ING --> EMB[Embeddings\nall-MiniLM-L6-v2]
+    EMB --> FAISS[(faiss_index/\nFAISS Vector Store)]
+    Q1[query.py / multi_domain_query.py] --> FAISS
+    FAISS --> CTX[Top-k Context Chunks]
+  end
+
+  subgraph SOL[Solana Token Intelligence]
+    DS1[DexScreener\n/token-profiles/latest] --> FETCH[fetcher.py\nextract mint addrs]
+    DS2[DexScreener\n/token-boosts/latest] --> FETCH
+    PF[pump.fun WebSocket\npumpfun_monitor.py] --> SCR[scraper3.py\nrun_continuous]
+    FETCH --> ORCH[orchestrator.py\nprocess_new_mints]
+    SCR --> ORCH
+    ORCH --> DATA[data.py\nDexScreener token detail\nlatest/dex/tokens/{mint}]
+    ORCH --> RISK[rugpull.py\nrisk heuristics]
+    ORCH --> MATH[math_engine.py\nsigmoid + scoring]
+    ORCH --> OUT[Output JSONL\nscraped_tokens.json]
+  end
+
+  subgraph LLM[Local LLM + Retrieval]
+    OLL[Ollama Runtime] --> QWEN[Qwen2.5\nqwen2.5:7b]
+    CTX --> SCR
+    ORCH --> SCR
+    SCR --> QWEN
+    QWEN --> OUT
+  end
+
+```
+
+## Proof / Demo
+
+Add your screenshot here (store it in `docs/images/` so it renders on GitHub):
+
+![Scraper output showing new tokens + AI analysis](docs/images/proof-scraper-output.png)
+
 Local **RAG (Retrieval-Augmented Generation)** workspace for generating research-style papers (Quantum Computing + AGI) from your own documents using a **FAISS** vector index + **sentence-transformers** embeddings + a local **Ollama** LLM.
 
 This repo also includes an optional Solana memecoin monitoring/scraping toolkit under [solana/](solana/) (DexScreener + Pump.fun WebSocket).
