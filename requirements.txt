@@ -1,0 +1,19 @@
+# Core RAG + embeddings
+faiss-cpu
+sentence-transformers
+numpy
+
+# LangChain stack
+langchain
+langchain-community
+langchain-huggingface
+pypdf
+PyPDF2
+
+# LLM client
+requests
+ollama
+
+# Solana / async scraper utilities (used by solana/ tools)
+aiohttp
+websockets

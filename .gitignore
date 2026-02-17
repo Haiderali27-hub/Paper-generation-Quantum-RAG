@@ -1,0 +1,34 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.log
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+ragenv/
+
+# Editor/OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+
+# --- Project data / generated artifacts ---
+# Copyrighted/large source materials (add your own locally)
+pdfs/
+
+# Generated vector store
+faiss_index/
+
+# Scraper outputs / caches
+scraped_tokens*.json
+seen_mints*.json
+solana/scraped_tokens*.json
+solana/seen_mints*.json
+scraped_tokens_backup.json
